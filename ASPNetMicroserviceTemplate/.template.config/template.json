@@ -1,0 +1,15 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Vegiwoo",    
+    "classifications": [ "aspnet", "microservice" ],
+    "identity": "ASPNetMicroserviceTemplate",
+    "name": "ASP.Net microservice template",
+    "desciption": "ASP.Net microservice template",
+    "shortName" : "aspnetservice",
+    "sourceName": "ASPNetMicroserviceTemplate",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "preferNameDirectory": true
+}
