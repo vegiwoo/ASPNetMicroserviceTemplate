@@ -15,6 +15,8 @@ builder.Services.AddSwaggerGen();
 SetUpDI(ref builder);
 AddDbContext(ref builder);
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

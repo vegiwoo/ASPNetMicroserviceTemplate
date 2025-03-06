@@ -4,7 +4,7 @@ namespace ASPNetMicroserviceTemplate.Model
 {
     /// <summary>
     /// The model is given for presentation purposes.
-    /// Should be removed from the project!
+    /// Should be removed from the real project!
     /// </summary>
     public class SomeModel 
     {

@@ -6,9 +6,11 @@ namespace ASPNetMicroserviceTemplate.Data
     /// <typeparam name="T">Generalized entity type.</typeparam>
     public interface IRepo<T>
     {
+        #region Functionality
         bool SaveShanges();
         IEnumerable<T>? GetAllItems();
         T? GetItemById(int id);
         void CreateItem(T item);
+        #endregion
     }
 } 

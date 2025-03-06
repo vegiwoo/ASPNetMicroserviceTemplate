@@ -2,17 +2,16 @@ using ASPNetMicroserviceTemplate.Model;
 
 namespace ASPNetMicroserviceTemplate.Data 
 {
-    public class SomeModelRepo : IRepo<SomeModel>
+    /// Should be removed from the real project!
+    public class SomeModelRepo(AppDBContext context) : IRepo<SomeModel>
     {
         #region Fields
-        private readonly AppDBContext context;
+        private readonly AppDBContext context = context;
+
         #endregion
 
         #region Constructors
-        public SomeModelRepo(AppDBContext context)
-        {
-            this.context = context;
-        }
+        // ... 
         #endregion
 
         #region Functionality
