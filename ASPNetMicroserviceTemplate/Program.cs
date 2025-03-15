@@ -1,7 +1,6 @@
 // https://www.youtube.com/watch?v=rdWZo5PD9Ek&list=PLiaBqb-WDp-qX2cCT9dJLG3pTa3At-D7p&index=4
 // https://www.youtube.com/watch?v=pj0hqTlxUX0
 
-
 using System.Diagnostics;
 using ASPNetMicroserviceTemplate.Data;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +10,6 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-       
 
         Task[] setUpTasks = [SetUpDbContext(builder), SetUpDI(builder)];
         for (int i = 0; i < setUpTasks.Length; i++)
@@ -31,9 +28,6 @@ internal class Program
         // Add automapper 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
-
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -45,7 +39,7 @@ internal class Program
             // Add console trace listener 
             Trace.Listeners.Add(new ConsoleTraceListener());
 
-            // Add fake date
+            // Add fake datа
             PrepDB.PrepPopulation(app);
         }
    
