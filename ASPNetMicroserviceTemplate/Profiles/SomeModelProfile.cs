@@ -11,7 +11,7 @@ namespace ASPNetMicroserviceTemplate.Profiles
         {
             // Source --> Target 
             CreateMap<SomeModel, SomeModelReadDto>();
-            CreateMap<SomeModelReadDto, SomeModel>();
+            CreateMap<SomeModelCreateDto, SomeModel>();
         }
     }
 }

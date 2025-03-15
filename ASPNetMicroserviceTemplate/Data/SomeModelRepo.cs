@@ -2,8 +2,8 @@ using ASPNetMicroserviceTemplate.Model;
 
 namespace ASPNetMicroserviceTemplate.Data 
 {
-    /// Should be removed from the real project!
-    public class SomeModelRepo(AppDBContext context) : IRepo<SomeModel>
+    // Should be removed from the real project!
+    public class SomeModelRepo(AppDBContext context) : ISomeModelsRepo
     {
         #region Fields
         private readonly AppDBContext context = context;

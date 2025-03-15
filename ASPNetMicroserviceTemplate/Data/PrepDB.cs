@@ -29,6 +29,8 @@ namespace ASPNetMicroserviceTemplate.Data
                 );
 
                 context.SaveChanges();
+
+                Trace.WriteLine($"Data: {context.SomeModels.Count()}");
             }
             else 
             {

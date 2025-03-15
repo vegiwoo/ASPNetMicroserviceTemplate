@@ -12,9 +12,5 @@ namespace ASPNetMicroserviceTemplate.Data
         public DbSet<SomeModel> SomeModels { get; set; }
 
         #endregion
-
-        #region Constructors
-        // ... 
-        #endregion
     }
 }
