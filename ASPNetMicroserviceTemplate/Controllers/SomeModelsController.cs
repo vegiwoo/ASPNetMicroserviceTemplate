@@ -50,11 +50,11 @@ namespace ASPNetMicroserviceTemplate.Controllers
 
             var readModel = mapper.Map<SomeModelReadDto>(someModel);  
 
-            // return readModel is not null ?
-            //     Ok(readModel) :
-            //     BadRequest();
+            return readModel is not null ?
+                Ok(readModel) :
+                BadRequest();
 
-            return CreatedAtRoute(nameof(GetSomeModelById), new { Id = readModel.Id, readModel });
+            //return CreatedAtRoute(nameof(GetSomeModelById), new { Id = readModel.Id, readModel });
             // TODO: Рабротать с возвратом CreatedAtRoute
         } 
         #endregion
