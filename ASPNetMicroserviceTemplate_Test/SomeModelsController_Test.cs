@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace ASPNetMicroserviceTemplate_Test;
 
 public class SomeModelsController_Test
@@ -5,7 +7,7 @@ public class SomeModelsController_Test
     [OneTimeSetUp]
     public void Setup()
     {
-        Trace.Add(new ConsoleTraceListener());
+        Trace.Listeners.Add(new ConsoleTraceListener()); 
         Trace.WriteLine("Setup");
     }
 
