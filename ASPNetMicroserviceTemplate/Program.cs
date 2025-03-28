@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using ASPNetMicroserviceTemplate.Data;
+using ASPNetMicroserviceTemplate.SyncDataServices.Http;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -15,7 +16,8 @@ internal class Program
                 options.UseInMemoryDatabase("InMem").UseInternalServiceProvider(sp);
             })
             .AddScoped<ISomeModelsRepo, SomeModelRepo>()
-            .AddHttpContextAccessor();
+            .AddHttpClient<IAnotherServiceDataClient, AnotherServiceDataClient>();
+            // .AddHttpContextAccessor();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

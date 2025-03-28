@@ -1,19 +1,23 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using ASPNetMicroserviceTemplate.Data;
 using ASPNetMicroserviceTemplate.Dtos;
 using ASPNetMicroserviceTemplate.Model;
+using ASPNetMicroserviceTemplate.SyncDataServices.Http;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNetMicroserviceTemplate.Controllers 
 {
     // Should be removed from the real project!
+    // "anotherServiceDataClient" implement in target controller for link another service
     [ApiController, Route("api/somemodels")]
-    public class SomeModelsController(ISomeModelsRepo repo, IMapper mapper) : ControllerBase
+    public class SomeModelsController(ISomeModelsRepo repo, IMapper mapper, IAnotherServiceDataClient anotherServiceDataClient) : ControllerBase
     {
         #region Fields
         private readonly ISomeModelsRepo repo = repo;
         private readonly IMapper mapper = mapper;
+        private readonly IAnotherServiceDataClient anotherServiceDataClient = anotherServiceDataClient;
         #endregion
 
         #region Functionality
@@ -42,7 +46,7 @@ namespace ASPNetMicroserviceTemplate.Controllers
         }
 
         [HttpPost]
-        public ActionResult<SomeModelReadDto> CreatSomeModel(SomeModelCreateDto createDto) 
+        public async Task<ActionResult<SomeModelReadDto>> CreatSomeModel(SomeModelCreateDto createDto) 
         {
             var someModel = mapper.Map<SomeModel>(createDto);
             repo.CreateItem(someModel);  
@@ -50,12 +54,22 @@ namespace ASPNetMicroserviceTemplate.Controllers
 
             var readModel = mapper.Map<SomeModelReadDto>(someModel);  
 
+            // ??? 
+            try
+            {
+                await anotherServiceDataClient.SendPostFromThisServiceToAnotherService(readModel);
+            }
+            catch (System.Exception ex)
+            {
+                Trace.WriteLine($"Could not send synchronously to another service {ex.Message}");
+            }
+
             return readModel is not null ?
                 Ok(readModel) :
                 BadRequest();
 
             //return CreatedAtRoute(nameof(GetSomeModelById), new { Id = readModel.Id, readModel });
-            // TODO: Рабротать с возвратом CreatedAtRoute
+            // TODO: Работать с возвратом CreatedAtRoute
         } 
         #endregion
     }
