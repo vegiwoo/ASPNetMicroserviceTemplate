@@ -1,0 +1,22 @@
+services:
+  aspnetmicroservicetemplate:
+    image: aspnetmicroservicetemplate:latest
+    container_name: aspnetmicroservicetemplate
+    build:
+      # Сборка образа из текущей директории
+      context: .
+      dockerfile: Dockerfile
+
+    # Привязка локальной директории к контейнеру
+    # Это позволяет редактировать файлы на локальной машине и видеть изменения в контейнере
+    # без необходимости пересобирать образ
+    # Не особо полезно для компилируемых языков, но полезно для интерпретируемых
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    ports:
+      # Порт локальной машины 8081 будет перенаправлен на порт контейнера 8081 
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

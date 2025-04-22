@@ -17,7 +17,7 @@ internal class Program
             })
             .AddScoped<ISomeModelsRepo, SomeModelRepo>()
             .AddHttpClient<IAnotherServiceDataClient, AnotherServiceDataClient>();
-            // .AddHttpContextAccessor();
+            //.AddHttpContextAccessor();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +29,8 @@ internal class Program
 
         // Add automapper 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
 
         var app = builder.Build();
 
@@ -50,6 +52,8 @@ internal class Program
         {
             ControllerActionEndpointConventionBuilder controllerActionEndpointConventionBuilder = ep.MapControllers();
         });
+
+        // app.UseHttpsRedirection();
 
         app.Run();
     }
