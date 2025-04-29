@@ -55,7 +55,7 @@ internal class Program
         // app.UseHttpsRedirection();
 
         // Add endpoint for readiness probes
-        app.MapGet("/test", () => Results.Ok());
+        app.MapGet("/api/health", () => Results.Ok());
 
         app.Run();
     }

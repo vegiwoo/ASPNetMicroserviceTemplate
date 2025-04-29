@@ -24,6 +24,28 @@ spec:
         image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.1
         ports:
         - containerPort: 8081
+        # Readiness and liveness probe
+        readnessProbe:
+          initialDelaySeconds: 10 # Задержка перед проверкой
+          periodSeconds: 30       # Период проверки
+          # Выполняется этот http-запрос
+          httpGet:
+            path: /api/health
+            port: 8081
+            scheme: HTTP
+          timeoutSeconds: 2       # Таймаут ответа на запрос
+          failureThreshold: 1     # Количество допустимых неудачных попыток
+          successThreshold: 1     # Количество необходимых успешных попыток
+        livelinessProbe:
+          initialDelaySeconds: 30 
+          periodSeconds: 30       
+          httpGet:
+            path: /api/health
+            port: 8081
+            scheme: HTTP
+          timeoutSeconds: 5       
+          failureThreshold: 10
+          successThreshold: 1
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
