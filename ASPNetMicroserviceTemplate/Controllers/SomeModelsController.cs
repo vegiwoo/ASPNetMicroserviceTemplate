@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Threading.Tasks;
 using ASPNetMicroserviceTemplate.Data;
 using ASPNetMicroserviceTemplate.Dtos;
 using ASPNetMicroserviceTemplate.Model;

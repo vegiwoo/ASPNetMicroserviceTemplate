@@ -54,8 +54,15 @@ internal class Program
 
         // app.UseHttpsRedirection();
 
+        // Add endpoint for liveness probes
+        app.MapGet("/healthz", () => Results.Ok());
+
         // Add endpoint for readiness probes
-        app.MapGet("/api/health", () => Results.Ok());
+        // - Для проверки добавляются все зависимости приложения, например, подключение к БД
+        app.MapGet("/readyz", (AppDBContext db) => 
+            db.Database.CanConnect() ? 
+            Results.Ok() : 
+            Results.Problem("Database is not available"));
 
         app.Run();
     }
