@@ -1,5 +1,7 @@
+# Манифест - Заголовок
 apiVersion: apps/v1
 kind: Deployment
+# Манифест - Объект deployment
 metadata:
   # Имя сервиса
   name: aspnetmicroservicetemplate
@@ -8,19 +10,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      pod: aspnetmicroservicetemplate
+      pod: aspnetmicroservicetemplate # Селектор для поиска подов
   template:
+    # Манифест - Объект pod (PodSpec)
     metadata:
       labels:
-        pod: aspnetmicroservicetemplate
+        pod: aspnetmicroservicetemplate # Метаданные для поиска подов
     spec:
       containers:
         # Имя контейнера
       - name: aspnetmicroservicetemplate-container
-        # Адрес образа
+        # Адрес образа на Docker Hub
         image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.1
-        # imagePullSecrets:
-        # - name: regcred
         ports:
         - containerPort: 8081
         env:

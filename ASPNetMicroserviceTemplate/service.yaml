@@ -1,0 +1,20 @@
+# Заголовок
+apiVersion: v1
+kind: Service
+# Манифест сервиса
+metadata:
+  name: aspnetmicroservicetemplate
+spec:
+  selector:
+    # Трафик будет направлен на контейнеры с меткой app: aspnetmicroservicetemplate
+    pod: aspnetmicroservicetemplate
+  ports:
+  # Сетевой протокол
+  - protocol: TCP
+    # Порт на котором будет доступен сервис 
+    port: 8081
+    # Целевой порт контейнера
+    # Может совпадать с портом сервиса и отдельно не указываться
+    targetPort: 8081
+  # Тип сервиса (здесь - внешний балансировщик)
+  type: LoadBalancer 

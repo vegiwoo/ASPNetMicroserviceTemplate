@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using ASPNetMicroserviceTemplate.Data;
 using ASPNetMicroserviceTemplate.SyncDataServices.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -30,8 +31,6 @@ internal class Program
         // Add automapper 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -54,6 +53,9 @@ internal class Program
         });
 
         // app.UseHttpsRedirection();
+
+        // Add endpoint for readiness probes
+        app.MapGet("/test", () => Results.Ok());
 
         app.Run();
     }
