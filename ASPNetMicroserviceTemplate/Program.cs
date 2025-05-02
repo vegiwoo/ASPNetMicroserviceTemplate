@@ -59,11 +59,11 @@ internal class Program
 
         // Add endpoint for readiness probes
         // - Для проверки добавляются все зависимости приложения, например, подключение к БД
-        app.MapGet("/readyz", (AppDBContext db) => 
-            db.Database.CanConnect() ? 
+        app.MapGet("/readyz", (AppDBContext db) =>  
+            db is not null && db.Database.CanConnect() ? 
             Results.Ok() : 
             Results.Problem("Database is not available"));
-
+      
         app.Run();
     }
 }

@@ -21,7 +21,7 @@ spec:
         # Имя контейнера
       - name: aspnetmicroservicetemplate-container
         # Адрес образа на Docker Hub
-        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.2
+        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.6
         ports:
         - containerPort: 8081
         # Readiness and liveness probes
@@ -30,7 +30,7 @@ spec:
           periodSeconds: 30       # Период проверки
           # Выполняется этот http-запрос
           httpGet:
-            path: /healthz
+            path: /readyz
             port: 8081
             scheme: HTTP
           timeoutSeconds: 2       # Таймаут ответа на запрос
@@ -40,11 +40,11 @@ spec:
           initialDelaySeconds: 30 
           periodSeconds: 30       
           httpGet:
-            path: /readyz
+            path: /healthz
             port: 8081
             scheme: HTTP
           timeoutSeconds: 5       
-          failureThreshold: 10
+          failureThreshold: 3
           successThreshold: 1
         env:
         - name: ASPNETCORE_ENVIRONMENT
