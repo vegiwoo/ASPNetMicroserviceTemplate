@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using ASPNetMicroserviceTemplate.Data;
 using ASPNetMicroserviceTemplate.SyncDataServices.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program

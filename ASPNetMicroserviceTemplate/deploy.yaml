@@ -11,6 +11,12 @@ spec:
   selector:
     matchLabels:
       pod: aspnetmicroservicetemplate # Селектор для поиска подов
+  # Указание стратегии обновления
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 # Количество подов, которые могут быть недоступны во время обновления
+      maxSurge: 2       # Количество подов, которые могут быть созданы во время обновления
   template:
     # Манифест - Объект pod (PodSpec)
     metadata:
@@ -22,7 +28,16 @@ spec:
       - name: aspnetmicroservicetemplate-container
         # Адрес образа на Docker Hub
         image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.6
-        ports:
+        resources:
+          # Ресурсы, которые будут выделены контейнеру
+          requests:
+            memory: "512Mi" # Минимально необходимая память в мебибайтах 
+            cpu: "500m"     # Минимально необходимый CPU в миллиярдных долях (250m = 25% ядра)
+          # Лимиты, которые могут быть выделены контейнеру
+          limits:
+            memory: "512Mi"   # Максимально допустимая память
+            cpu: "500m"       # Максимально допустимый CPU
+        ports:  
         - containerPort: 8081
         # Readiness and liveness probes
         readinessProbe:
