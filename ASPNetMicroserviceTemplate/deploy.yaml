@@ -1,3 +1,15 @@
+# Класс приоритета
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: hight-priority
+value: 1000000                  # Значение приоритета     
+preemptionPolicy: Never         # Политика вытеснения
+globalDefault: false            # Должен ли быть дефолтным классом приоритета
+description: "Critical service" # Описание класса приоритета
+
+---
+# Спецификация для создания сервиса
 # Манифест - Заголовок
 apiVersion: apps/v1
 kind: Deployment
@@ -23,6 +35,7 @@ spec:
       labels:
         pod: aspnetmicroservicetemplate # Метаданные для поиска подов
     spec:
+      priorityClassName: hight-priority # Указание класса приоритета
       containers:
         # Имя контейнера
       - name: aspnetmicroservicetemplate-container
