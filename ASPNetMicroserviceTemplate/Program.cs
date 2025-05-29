@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using ASPNetMicroserviceTemplate.Data;
-using ASPNetMicroserviceTemplate.SyncDataServices.Http;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -62,6 +61,27 @@ internal class Program
             db is not null && db.Database.CanConnect() ? 
             Results.Ok() : 
             Results.Problem("Database is not available"));
+
+        // Test, should be removed from the real project!
+        app.MapGet("/avatarTest", () =>
+        {
+            // Variable impliment in deploy 
+            var avatarUrlString = Environment.GetEnvironmentVariable("AVATAR_ENDPOINT");
+            if (string.IsNullOrEmpty(avatarUrlString))
+            {
+                return Results.Problem("AVATAR_ENDPOINT is not available");
+            }
+            else
+            {
+                Random random = new();
+                var rInt = (int)random.NextInt64(1, 99);
+                avatarUrlString = string.Concat(avatarUrlString, "/", rInt);
+                ;
+                return Results.Ok(File(avatarUrlString, "image/jpeg"));
+                //return new File(avatarUrlString, "image/jpeg");
+            }
+        });
+
       
         app.Run();
     }

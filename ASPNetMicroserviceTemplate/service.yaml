@@ -1,9 +1,9 @@
-# Заголовок
+# # Заголовок
 apiVersion: v1
 kind: Service
 # Манифест сервиса
 metadata:
-  name: aspnetmicroservicetemplate
+  name: aspnetmicroservicetemplate-lb
 spec:
   selector:
     # Трафик будет направлен на контейнеры с меткой app: aspnetmicroservicetemplate
@@ -13,8 +13,21 @@ spec:
   - protocol: TCP
     # Порт на котором будет доступен сервис 
     port: 8081
-    # Целевой порт контейнера
-    # Может совпадать с портом сервиса и отдельно не указываться
+    # Целевой порт контейнера, может совпадать с портом сервиса и отдельно не указываться
     targetPort: 8081
   # Тип сервиса (здесь - внешний балансировщик)
   type: LoadBalancer 
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: aspnetmicroservicetemplate-internal
+# spec:
+#   selector:
+#     # Трафик будет направлен на контейнеры с меткой app: aspnetmicroservicetemplate
+#     pod: aspnetmicroservicetemplate
+#   ports:
+#   - port: 8081
+#     targetPort: 8081
+#     protocol: TCP
+#   type: NodePort 

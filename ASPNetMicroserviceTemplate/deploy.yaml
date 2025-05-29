@@ -7,7 +7,6 @@ value: 1000000                  # Значение приоритета
 preemptionPolicy: Never         # Политика вытеснения
 globalDefault: false            # Должен ли быть дефолтным классом приоритета
 description: "Critical service" # Описание класса приоритета
-
 ---
 # Спецификация для создания сервиса
 # Манифест - Заголовок
@@ -40,7 +39,7 @@ spec:
         # Имя контейнера
       - name: aspnetmicroservicetemplate-container
         # Адрес образа на Docker Hub
-        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.6
+        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.9
         resources:
           # Ресурсы, которые будут выделены контейнеру
           requests:
@@ -52,7 +51,7 @@ spec:
             cpu: "500m"       # Максимально допустимый CPU
         ports:  
         - containerPort: 8081
-        # Readiness and liveness probes
+        # Readiness and liveness probe
         readinessProbe:
           initialDelaySeconds: 10 # Задержка перед проверкой
           periodSeconds: 30       # Период проверки
@@ -77,3 +76,6 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
+        # Test! 
+        - name: AVATAR_ENDPOINT
+          value: http://robohash-np

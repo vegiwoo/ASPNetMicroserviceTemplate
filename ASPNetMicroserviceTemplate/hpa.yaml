@@ -1,0 +1,20 @@
+# Horizontal Pod Autoscaler (HPA)
+# Автоматическое масштабирование подов
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: aspnetmicroservicetemplate
+spec:
+  minReplicas: 1
+  maxReplicas: 3
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aspnetmicroservicetemplate
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 20 # Целевое значение использования CPU в процентах
