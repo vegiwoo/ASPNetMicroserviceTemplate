@@ -1,0 +1,9 @@
+# Класс приоритета
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: hight-priority
+value: 1000000                  # Значение приоритета     
+preemptionPolicy: Never         # Политика вытеснения
+globalDefault: false            # Должен ли быть дефолтным классом приоритета
+description: "Critical service" # Описание класса приоритета

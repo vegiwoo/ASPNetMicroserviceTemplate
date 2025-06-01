@@ -1,13 +1,3 @@
-# Класс приоритета
-apiVersion: scheduling.k8s.io/v1
-kind: PriorityClass
-metadata:
-  name: hight-priority
-value: 1000000                  # Значение приоритета     
-preemptionPolicy: Never         # Политика вытеснения
-globalDefault: false            # Должен ли быть дефолтным классом приоритета
-description: "Critical service" # Описание класса приоритета
----
 # Спецификация для создания сервиса
 # Манифест - Заголовок
 apiVersion: apps/v1
@@ -15,13 +5,14 @@ kind: Deployment
 # Манифест - Объект deployment
 metadata:
   # Имя сервиса
-  name: aspnetmicroservicetemplate
+  name: testservice01
+  namespace: ingress-example
 spec:
   # Количество реплик сервиса 
   replicas: 1
   selector:
     matchLabels:
-      pod: aspnetmicroservicetemplate # Селектор для поиска подов
+      pod: testservice01 # Селектор для поиска подов
   # Указание стратегии обновления
   strategy: 
     type: RollingUpdate
@@ -32,14 +23,14 @@ spec:
     # Манифест - Объект pod (PodSpec)
     metadata:
       labels:
-        pod: aspnetmicroservicetemplate # Метаданные для поиска подов
+        pod: testservice01 # Метаданные для поиска подов
     spec:
       priorityClassName: hight-priority # Указание класса приоритета
       containers:
         # Имя контейнера
-      - name: aspnetmicroservicetemplate-container
+      - name: testservice01-container
         # Адрес образа на Docker Hub
-        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.9
+        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.12
         resources:
           # Ресурсы, которые будут выделены контейнеру
           requests:
@@ -79,3 +70,18 @@ spec:
         # Test! 
         - name: AVATAR_ENDPOINT
           value: http://robohash-np
+---
+# ClusterIP для сервиса
+apiVersion: v1
+kind: Service
+metadata:
+  name: testservice01-cip
+  namespace: ingress-example
+spec:
+  selector:
+    app: testservice01
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081
+  type: ClusterIP

@@ -9,6 +9,7 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services
+            .AddHttpClient()
             .AddEntityFrameworkInMemoryDatabase()
             .AddDbContext<AppDBContext>((sp, options) =>
             {
