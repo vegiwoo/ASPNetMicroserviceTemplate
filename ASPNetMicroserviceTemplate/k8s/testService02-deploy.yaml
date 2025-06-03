@@ -1,9 +1,9 @@
-# Тестовый сервис - Спецификация
+# Тестовый сервис 2 - Спецификация
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: robohash
-  namespace: ingress-example
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -18,17 +18,34 @@ spec:
       - name: robohash-container
         image: wdenniss/robohash:3
 ---
-# Тестовый сервис 2 - ClusterIP
+# Тестовый сервис 2 - NodePort
 apiVersion: v1
 kind: Service
 metadata:
-  name: robohash-cip
-  namespace: ingress-example
+  name: robohash-np
+  namespace: default
 spec:
   selector:
-    app: robohash
+    pod: robohash
   ports:
-  - protocol: TCP
-    port: 8082
+  - port: 8082
     targetPort: 8082
-  type: ClusterIP
+    protocol: TCP
+  type: NodePort
+  
+# ---
+# Тестовый сервис 2 - ClusterIP
+# - сервис достпен только внутри кластера
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: robohash
+#   namespace: ingress-example
+# spec:
+#   selector:
+#     app: robohash
+#   ports:
+#   - protocol: TCP
+#     port: 8082
+#     targetPort: 8082
+#   type: ClusterIP
