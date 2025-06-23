@@ -5,7 +5,7 @@ namespace ASPNetMicroserviceTemplate.Data
     public interface ISomeModelsRepo
     {
         #region Functionality
-        bool SaveShanges();
+        bool SaveChanges();
         IEnumerable<SomeModel>? GetAllItems();
         SomeModel? GetItemById(int id);
         void CreateItem(SomeModel item);

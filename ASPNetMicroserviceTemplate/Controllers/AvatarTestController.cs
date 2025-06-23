@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
  // Test, should be removed from the real project!
 namespace ASPNetMicroserviceTemplate.Controllers
 {
-    [ApiController, Route("avatarTest")]
+    [ApiController, Route("api/avatarTest")]
     public class AvatarTestController(ISomeModelsRepo repo, IMapper mapper, IHttpClientFactory httpClientFactory) : ControllerBase
     {
         #region Fields
@@ -27,7 +27,10 @@ namespace ASPNetMicroserviceTemplate.Controllers
             {
                 Random random = new();
                 avatarUrlString = string.Concat(avatarUrlString, "/", (int)random.NextInt64(1, 99));
+
+                // TODO: Передавать фабрику! 
                 HttpClient client = httpClientFactory.CreateClient();
+                
                 HttpResponseMessage response = await client.GetAsync(avatarUrlString);
                 response.EnsureSuccessStatusCode();
                 return File(await response.Content.ReadAsStreamAsync(), "image/jpeg");

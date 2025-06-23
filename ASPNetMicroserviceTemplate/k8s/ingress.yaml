@@ -1,10 +1,12 @@
 apiVersion: networking.k8s.io/v1
-kind: Ingress 
+kind: Ingress
 metadata:
   name: example-ingress
-  namespace: ingress-example
+  namespace: default
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
   - host: repack.pw
@@ -13,16 +15,15 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          # Ссылка на внутренний сервис 1
           service:
-            name: testservice01
+            name: testservice01-np
             port:
               number: 8081
-      - path: /robohash
-        pathType: Prefix
-        backend:
-          # Ссылка на внутренний сервис 1
-          service:
-            name: robohash
-            port:
-              number: 8082
+
+      # - path: /service02/.*
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: testservice02-np
+      #       port:
+      #         number: 80

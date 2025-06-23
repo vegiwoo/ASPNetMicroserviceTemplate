@@ -8,6 +8,17 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        #region Runtime-specific settings
+        // if (builder.Environment.IsDevelopment())
+        // {
+        //     // Settings for dev environment
+        // }
+        // else
+        // {
+        //     // Settings for prod environment
+        // }
+        #endregion
+        
         builder.Services
             .AddHttpClient()
             .AddEntityFrameworkInMemoryDatabase()
@@ -52,16 +63,18 @@ internal class Program
         });
 
         // app.UseHttpsRedirection();
+        //app.MapControllers();
 
         // Add endpoint for liveness probes
-        app.MapGet("/healthz", () => Results.Ok());
+        app.MapGet("/api/health", () =>
+            Results.Ok($"{DateTime.Now}: Service successfully responds to requests"));
 
         // Add endpoint for readiness probes
         // - Для проверки добавляются все зависимости приложения, например, подключение к БД
-        app.MapGet("/readyz", (AppDBContext db) =>  
+        app.MapGet("/api/ready", (AppDBContext db) =>  
             db is not null && db.Database.CanConnect() ? 
-            Results.Ok() : 
-            Results.Problem("Database is not available"));
+            Results.Ok($"{DateTime.Now}: Service is ready to receive traffic") : 
+            Results.Problem($"{DateTime.Now}: DB is not available."));
 
         app.Run();
     }

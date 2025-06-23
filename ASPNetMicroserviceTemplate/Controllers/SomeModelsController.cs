@@ -2,7 +2,6 @@ using System.Diagnostics;
 using ASPNetMicroserviceTemplate.Data;
 using ASPNetMicroserviceTemplate.Dtos;
 using ASPNetMicroserviceTemplate.Model;
-using ASPNetMicroserviceTemplate.SyncDataServices.Http;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +10,11 @@ namespace ASPNetMicroserviceTemplate.Controllers
     // Should be removed from the real project!
     // "anotherServiceDataClient" implement in target controller for link another service
     [ApiController, Route("api/somemodels")]
-    public class SomeModelsController(ISomeModelsRepo repo, IMapper mapper, IAnotherServiceDataClient anotherServiceDataClient) : ControllerBase
+    public class SomeModelsController(ISomeModelsRepo repo, IMapper mapper) : ControllerBase
     {
         #region Fields
         private readonly ISomeModelsRepo repo = repo;
         private readonly IMapper mapper = mapper;
-        private readonly IAnotherServiceDataClient anotherServiceDataClient = anotherServiceDataClient;
         #endregion
 
         #region Functionality
@@ -27,8 +25,8 @@ namespace ASPNetMicroserviceTemplate.Controllers
 
             var someModelItems = repo.GetAllItems();
 
-            return someModelItems is not null && someModelItems.Any() ? 
-                Ok(mapper.Map<IEnumerable<SomeModelReadDto>>(someModelItems)) : 
+            return someModelItems is not null && someModelItems.Any() ?
+                Ok(mapper.Map<IEnumerable<SomeModelReadDto>>(someModelItems)) :
                 NoContent();
         }
 
@@ -49,19 +47,9 @@ namespace ASPNetMicroserviceTemplate.Controllers
         {
             var someModel = mapper.Map<SomeModel>(createDto);
             repo.CreateItem(someModel);  
-            repo.SaveShanges();
+            repo.SaveChanges();
 
             var readModel = mapper.Map<SomeModelReadDto>(someModel);  
-
-            // ??? 
-            try
-            {
-                await anotherServiceDataClient.SendPostFromThisServiceToAnotherService(readModel);
-            }
-            catch (System.Exception ex)
-            {
-                Trace.WriteLine($"Could not send synchronously to another service {ex.Message}");
-            }
 
             return readModel is not null ?
                 Ok(readModel) :
