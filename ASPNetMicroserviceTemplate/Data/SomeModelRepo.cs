@@ -27,7 +27,7 @@ namespace ASPNetMicroserviceTemplate.Data
 
         public SomeModel? GetItemById(int id) => context.SomeModels.FirstOrDefault(u => Equals(u.Id, id));
         
-        public bool SaveShanges() => context.SaveChanges() >= 0;
+        public bool SaveChanges() => context.SaveChanges() >= 0;
         #endregion
     }
 }
