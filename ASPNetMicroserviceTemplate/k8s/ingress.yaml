@@ -7,6 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/use-regex: "true"
     kubernetes.io/ingress.class: nginx
+    # Добавляется ссылка на ранее созданный ClusterIssuer
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
   - host: repack.pw
@@ -19,7 +21,13 @@ spec:
             name: testservice01-np
             port:
               number: 8081
-
+  # секция для сертификации
+  tls:
+  - hosts:
+    # домены, для которых cert-manager должен выпустить сертификаты
+    - repack.pw
+    # секрет, где они будут храниться сертификаты.
+    secretName: ingress-tls
       # - path: /service02/.*
       #   pathType: Prefix
       #   backend:

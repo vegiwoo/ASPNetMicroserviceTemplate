@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # Реальная почта, она необходима для создания сертификатов, 
+    # на нее будут приходить уведомления от Let's Encrypt.
+    email: d.v.samartcev@gmail.com
+    # адрес Let's Encrypt или другого центра сертификации.
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # секрет, в котором хранится закрытый ключ
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    #  метод подтверждения владения доменом через HTTP, в 
+    # данном случае с использованием Ingress-контроллера nginx.
+    solvers:
+    - http01:
+        ingress:
+          class: nginx

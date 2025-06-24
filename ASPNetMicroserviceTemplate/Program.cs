@@ -62,7 +62,7 @@ internal class Program
             ControllerActionEndpointConventionBuilder controllerActionEndpointConventionBuilder = ep.MapControllers();
         });
 
-        // app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
         //app.MapControllers();
 
         // Add endpoint for liveness probes
