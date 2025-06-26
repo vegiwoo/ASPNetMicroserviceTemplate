@@ -18,6 +18,9 @@ internal class Program
         //     // Settings for prod environment
         // }
         #endregion
+
+        // Logging
+        builder.Logging.ClearProviders().AddConsole();
         
         builder.Services
             .AddHttpClient()
@@ -41,7 +44,10 @@ internal class Program
         // Add automapper 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
         var app = builder.Build();
+
+        ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -63,7 +69,6 @@ internal class Program
         });
 
         app.UseHttpsRedirection();
-        //app.MapControllers();
 
         // Add endpoint for liveness probes
         app.MapGet("/api/health", () =>

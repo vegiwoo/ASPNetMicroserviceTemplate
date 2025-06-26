@@ -2,54 +2,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: testservice02
+  name: robohash
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: testservice02
+      app: robohash
   template:
     metadata:
       labels:  
-        app: testservice02
+        app: robohash
     spec:
       containers:
-      - name: testservice02-container
+      - name: robohash-container
         image: wdenniss/robohash:3
         ports:  
         - containerPort: 8082
-# ---
-# # Тестовый сервис 2 - NodePort
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: robohash-np
-#   namespace: default
-# spec:
-#   selector:
-#     pod: robohash
-#   ports:
-#   - port: 8082
-#     targetPort: 8082
-#     protocol: TCP
-#   type: NodePort
-  
 ---
-# Тестовый сервис 2 - ClusterIP
-# - сервис достпен только внутри кластера
-# ClusterIP для сервиса
-# - сервис доступен только внутри кластера
+# Тестовый сервис 2 - NodePort
 apiVersion: v1
 kind: Service
 metadata:
-  name: testservice02-np
+  name: robohash-np
   namespace: default
 spec:
   selector:
-    app: testservice02
+    app: robohash
   ports:
-  - protocol: TCP
-    port: 8082
+  - port: 8082
     targetPort: 8082
-  type: ClusterIP
+    protocol: TCP
+  type: NodePort
+# ---
+# # Тестовый сервис 2 - ClusterIP
+# # - сервис достпен только внутри кластера
+# # ClusterIP для сервиса
+# # - сервис доступен только внутри кластера
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: robohash-ip
+#   namespace: default
+# spec:
+#   selector:
+#     app: robohash
+#   ports:
+#   - protocol: TCP
+#     port: 8082
+#     targetPort: 8082
+#   type: ClusterIP

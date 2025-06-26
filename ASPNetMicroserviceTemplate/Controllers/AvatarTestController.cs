@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace ASPNetMicroserviceTemplate.Controllers
 {
     [ApiController, Route("api/avatarTest")]
-    public class AvatarTestController(ISomeModelsRepo repo, IMapper mapper, IHttpClientFactory httpClientFactory) : ControllerBase
+    public class AvatarTestController(ISomeModelsRepo repo, IMapper mapper, IHttpClientFactory httpClientFactory,  ILogger<AvatarTestController> logger) : ControllerBase
     {
         #region Fields
         private readonly ISomeModelsRepo repo = repo;
         private readonly IMapper mapper = mapper;
         private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
+        private readonly ILogger<AvatarTestController> logger = logger;
         #endregion
 
         #region Functionality
@@ -26,7 +27,10 @@ namespace ASPNetMicroserviceTemplate.Controllers
             else
             {
                 Random random = new();
-                avatarUrlString = string.Concat(avatarUrlString, "/", (int)random.NextInt64(1, 99));
+                int avatarId = (int)random.NextInt64(1, 99);
+                avatarUrlString = string.Concat(avatarUrlString, "/", avatarId);
+
+                logger.LogInformation($"--> Get random avatar with id {avatarId}...", DateTime.UtcNow.ToLongTimeString());
 
                 // TODO: Передавать фабрику! 
                 HttpClient client = httpClientFactory.CreateClient();

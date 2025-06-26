@@ -10,18 +10,19 @@ namespace ASPNetMicroserviceTemplate.Controllers
     // Should be removed from the real project!
     // "anotherServiceDataClient" implement in target controller for link another service
     [ApiController, Route("api/somemodels")]
-    public class SomeModelsController(ISomeModelsRepo repo, IMapper mapper) : ControllerBase
+    public class SomeModelsController(ISomeModelsRepo repo, IMapper mapper, ILogger<SomeModelsController> logger) : ControllerBase
     {
         #region Fields
         private readonly ISomeModelsRepo repo = repo;
         private readonly IMapper mapper = mapper;
+        private readonly ILogger logger = logger;
         #endregion
 
         #region Functionality
         [HttpGet]
         public ActionResult<IEnumerable<SomeModelReadDto>> GetSomeModels() 
         {
-            Trace.WriteLine("--> Getting some models");
+            logger.LogInformation("--> Getting some models...", DateTime.UtcNow.ToLongTimeString());
 
             var someModelItems = repo.GetAllItems();
 
@@ -33,7 +34,7 @@ namespace ASPNetMicroserviceTemplate.Controllers
         [HttpGet("{id}", Name = "GetSomeModelById")]
         public ActionResult<SomeModelReadDto> GetSomeModelById(int id) 
         {
-            Trace.WriteLine($"--> Get some model by id {id}");
+            logger.LogInformation($"--> Get some model by id {id}...", DateTime.UtcNow.ToLongTimeString());
 
             var someModelItem = repo.GetItemById(id);
 
@@ -45,6 +46,8 @@ namespace ASPNetMicroserviceTemplate.Controllers
         [HttpPost]
         public async Task<ActionResult<SomeModelReadDto>> CreatSomeModel(SomeModelCreateDto createDto) 
         {
+            logger.LogInformation("--> Create new model...", DateTime.UtcNow.ToLongTimeString());
+
             var someModel = mapper.Map<SomeModel>(createDto);
             repo.CreateItem(someModel);  
             repo.SaveChanges();

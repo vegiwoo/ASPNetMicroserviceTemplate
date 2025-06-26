@@ -4,7 +4,7 @@ metadata:
   name: example-ingress
   namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    # : /
     nginx.ingress.kubernetes.io/use-regex: "true"
     kubernetes.io/ingress.class: nginx
     # Добавляется ссылка на ранее созданный ClusterIssuer
@@ -14,13 +14,20 @@ spec:
   - host: repack.pw
     http:
       paths:
-      - path: /
+      - path: /api/.*
         pathType: Prefix
         backend:
           service:
             name: testservice01-np
             port:
               number: 8081
+      # - path: /example/
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: robohash-np
+      #       port:
+      #         number: 8082
   # секция для сертификации
   tls:
   - hosts:
@@ -28,10 +35,4 @@ spec:
     - repack.pw
     # секрет, где они будут храниться сертификаты.
     secretName: ingress-tls
-      # - path: /service02/.*
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: testservice02-np
-      #       port:
-      #         number: 80
+  
