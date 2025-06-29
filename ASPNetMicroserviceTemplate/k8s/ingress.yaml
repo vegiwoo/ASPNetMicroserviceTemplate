@@ -18,16 +18,16 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: testservice01-np
+            name: testservice01-ip
             port:
               number: 8081
-      # - path: /example/
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: robohash-np
-      #       port:
-      #         number: 8082
+      - path: /example/.*
+        pathType: Prefix
+        backend:
+          service:
+            name: robohash-ip
+            port:
+              number: 8082
   # секция для сертификации
   tls:
   - hosts:

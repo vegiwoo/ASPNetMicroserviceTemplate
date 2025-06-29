@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace ASPNetMicroserviceTemplate.Controllers
 {
     [ApiController, Route("api/avatarTest")]
-    public class AvatarTestController(ISomeModelsRepo repo, IMapper mapper, IHttpClientFactory httpClientFactory,  ILogger<AvatarTestController> logger) : ControllerBase
+    public class AvatarTestController(ISomeModelsRepo repo, IMapper mapper, IHttpClientFactory httpClientFactory, ILogger<AvatarTestController> logger) : ControllerBase
     {
         #region Fields
-        private readonly ISomeModelsRepo repo = repo;
-        private readonly IMapper mapper = mapper;
-        private readonly IHttpClientFactory httpClientFactory = httpClientFactory;
-        private readonly ILogger<AvatarTestController> logger = logger;
+        private readonly ISomeModelsRepo _repo = repo != null ? repo : throw new ArgumentNullException(nameof(repo), "Repo cannot be null");
+        private readonly IMapper _mapper = mapper != null ? mapper : throw new ArgumentNullException(nameof(mapper), "Mapper cannot be null");
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory != null ? httpClientFactory : throw new ArgumentNullException(nameof(httpClientFactory), "HTTPClientFactory cannot be null");
+        private readonly ILogger<AvatarTestController> _logger = logger != null ? logger : throw new ArgumentNullException(nameof(logger), "Logger cannot be null");
+
+        #endregion
+        #region Constructor
         #endregion
 
         #region Functionality
@@ -30,14 +33,19 @@ namespace ASPNetMicroserviceTemplate.Controllers
                 int avatarId = (int)random.NextInt64(1, 99);
                 avatarUrlString = string.Concat(avatarUrlString, "/", avatarId);
 
-                logger.LogInformation($"--> Get random avatar with id {avatarId}...", DateTime.UtcNow.ToLongTimeString());
-
-                // TODO: Передавать фабрику! 
-                HttpClient client = httpClientFactory.CreateClient();
                 
-                HttpResponseMessage response = await client.GetAsync(avatarUrlString);
-                response.EnsureSuccessStatusCode();
-                return File(await response.Content.ReadAsStreamAsync(), "image/jpeg");
+                HttpResponseMessage response;
+                using (HttpClient client = _httpClientFactory.CreateClient())
+                {
+                    response = await client.GetAsync(avatarUrlString);
+                    response.EnsureSuccessStatusCode();
+
+                    _logger.LogInformation("--> Get random avatar with id {avatarId}...", DateTime.UtcNow.ToLongTimeString());
+                }
+
+                return response.StatusCode != System.Net.HttpStatusCode.OK ?
+                    Problem(detail: $"Failed to retrieve avatar from {avatarUrlString}. Status code: {response.StatusCode}", statusCode: (int)response.StatusCode) :
+                    File(await response.Content.ReadAsStreamAsync(), "image/jpeg");
             }
         }
         #endregion

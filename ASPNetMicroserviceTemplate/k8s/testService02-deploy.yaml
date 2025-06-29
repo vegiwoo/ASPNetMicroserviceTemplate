@@ -19,36 +19,36 @@ spec:
         image: wdenniss/robohash:3
         ports:  
         - containerPort: 8082
----
-# Тестовый сервис 2 - NodePort
-apiVersion: v1
-kind: Service
-metadata:
-  name: robohash-np
-  namespace: default
-spec:
-  selector:
-    app: robohash
-  ports:
-  - port: 8082
-    targetPort: 8082
-    protocol: TCP
-  type: NodePort
 # ---
-# # Тестовый сервис 2 - ClusterIP
-# # - сервис достпен только внутри кластера
-# # ClusterIP для сервиса
-# # - сервис доступен только внутри кластера
+# # Тестовый сервис 2 - NodePort
 # apiVersion: v1
 # kind: Service
 # metadata:
-#   name: robohash-ip
+#   name: robohash-np
 #   namespace: default
 # spec:
 #   selector:
 #     app: robohash
 #   ports:
-#   - protocol: TCP
-#     port: 8082
+#   - port: 8082
 #     targetPort: 8082
-#   type: ClusterIP
+#     protocol: TCP
+#   type: NodePort
+---
+# Тестовый сервис 2 - ClusterIP
+# - сервис достпен только внутри кластера
+# ClusterIP для сервиса
+# - сервис доступен только внутри кластера
+apiVersion: v1
+kind: Service
+metadata:
+  name: robohash-ip
+  namespace: default
+spec:
+  selector:
+    app: robohash
+  ports:
+  - protocol: TCP
+    port: 8082
+    targetPort: 8082
+  type: ClusterIP
