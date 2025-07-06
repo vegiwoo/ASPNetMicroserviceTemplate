@@ -55,6 +55,8 @@ spec:
     app: robohash
   ports:
   - protocol: TCP
+    # Порт, на котором сервис будет доступен внутри кластера
     port: 8082
+    # Порт, на который будет перенаправлен трафик внутри пода
     targetPort: 8082
   type: ClusterIP

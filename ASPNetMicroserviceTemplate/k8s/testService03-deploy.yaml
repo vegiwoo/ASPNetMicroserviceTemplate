@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nasdaq
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nasdaq
+  template:
+    metadata:
+      labels:  
+        app: nasdaq
+    spec:
+      containers:
+      - name: nasdaq-container
+        image: mcp/nasdaq-data-link:latest
+        ports:  
+        - containerPort: 8083 
+---
+# Тестовый сервис 2 - ClusterIP
+# - сервис достпен только внутри кластера
+apiVersion: v1
+kind: Service
+metadata:
+  name: nasdaq-cip
+  namespace: default
+spec:
+  selector:
+    app: nasdaq
+  ports:
+  - protocol: TCP
+    # Порт, на котором сервис будет доступен внутри кластера
+    port: 8083
+    # Порт, на который будет перенаправлен трафик внутри пода
+    targetPort: 8083
+  type: ClusterIP

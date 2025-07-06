@@ -29,7 +29,7 @@ spec:
         # Имя контейнера
       - name: testservice01-container
         # Адрес образа на Docker Hub
-        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.30
+        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.31
         resources:
           # Ресурсы, которые будут выделены контейнеру
           requests:
@@ -68,7 +68,9 @@ spec:
           value: "Production"
         # Test! 
         - name: AVATAR_ENDPOINT
-          value: http://robohash-cip.default.svc.cluster.local
+          value: http://robohash-cip:8082 # Ссылка на сервис RoboHash
+        - name: NASDAQ_ENDPOINT
+          value: http://nasdaq-cip:8083 # Ссылка на сервис Nasdaq Data Link
 # ---
 # # Тестовый сервис 1 - NodePort
 # apiVersion: v1
