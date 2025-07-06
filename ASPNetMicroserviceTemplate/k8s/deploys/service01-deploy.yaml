@@ -4,14 +4,14 @@ kind: Deployment
 # Манифест - Объект deployment
 metadata:
   # Имя сервиса
-  name: testservice01
+  name: service01
   namespace: default
 spec:
   # Количество реплик сервиса 
   replicas: 1
   selector:
     matchLabels:
-      app: testservice01 # Селектор для поиска подов
+      app: service01 # Селектор для поиска подов
   # Указание стратегии обновления
   strategy: 
     type: RollingUpdate
@@ -22,12 +22,12 @@ spec:
     # Манифест - Объект pod (PodSpec)
     metadata:
       labels:
-        app: testservice01 # Метаданные для поиска подов
+        app: service01 # Метаданные для поиска подов
     spec:
       priorityClassName: hight-priority # Указание класса приоритета
       containers:
         # Имя контейнера
-      - name: testservice01-container
+      - name: service01-container
         # Адрес образа на Docker Hub
         image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.32
         resources:
@@ -68,37 +68,6 @@ spec:
           value: "Production"
         # Test! 
         - name: AVATAR_ENDPOINT
-          value: http://robohash-cip:8082 # Ссылка на сервис RoboHash
-        - name: NASDAQ_ENDPOINT
-          value: http://nasdaq-cip # Ссылка на сервис Nasdaq Data Link
-# ---
-# # Тестовый сервис 1 - NodePort
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: testservice01-np
-#   namespace: default
-# spec:
-#   selector:
-#     app: testservice01
-#   ports:
-#   - port: 8081
-#     targetPort: 8081
-#     protocol: TCP
-#   type: NodePort
----
-# ClusterIP для сервиса
-# - сервис доступен только внутри кластера
-apiVersion: v1
-kind: Service
-metadata:
-  name: testservice01-ip
-  namespace: default
-spec:
-  selector:
-    app: testservice01
-  ports:
-  - protocol: TCP
-    port: 8081
-    targetPort: 8081
-  type: ClusterIP
+          value: http://robohash-cip # Ссылка на сервис RoboHash
+        # - name: NASDAQ_ENDPOINT
+        #   value: http://nasdaq-cip # Ссылка на сервис Nasdaq Data Link

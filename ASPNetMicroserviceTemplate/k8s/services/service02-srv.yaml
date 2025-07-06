@@ -1,0 +1,15 @@
+# ClusterIP для сервиса
+# - сервис доступен только внутри кластера
+apiVersion: v1
+kind: Service
+metadata:
+  name: robohash-cip
+  namespace: default
+spec:
+  selector:
+    app: robohash
+  ports:
+  - protocol: TCP
+    port: 80          # в кластере
+    targetPort: 80    # на контейнере
+  type: ClusterIP

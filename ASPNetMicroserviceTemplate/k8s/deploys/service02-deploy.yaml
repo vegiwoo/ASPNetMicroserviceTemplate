@@ -1,0 +1,30 @@
+# Тестовый сервис 2 - Спецификация
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: robohash
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: robohash
+  template:
+    metadata:
+      labels:  
+        app: robohash
+    spec:
+      containers:
+      - name: robohash-container
+        image: wdenniss/robohash:3
+        resources:
+          # Ресурсы, которые будут выделены контейнеру
+          requests:
+            memory: "128Mi" # Минимально необходимая память в мебибайтах 
+            cpu: "128m"     # Минимально необходимый CPU в миллиярдных долях (250m = 25% ядра)
+          # Лимиты, которые могут быть выделены контейнеру
+          limits:
+            memory: "128Mi"   # Максимально допустимая память в мебибайтах 
+            cpu: "128m"       # Максимально допустимый CPU
+        ports:  
+        - containerPort: 80 
