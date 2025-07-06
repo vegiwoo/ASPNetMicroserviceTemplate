@@ -44,6 +44,24 @@ internal class Program
         // Add automapper 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+        builder.Services.AddHttpsRedirection(options =>
+        {
+            options.RedirectStatusCode = builder.Environment.IsDevelopment() ?
+                StatusCodes.Status307TemporaryRedirect :
+                StatusCodes.Status308PermanentRedirect;
+
+            options.HttpsPort = builder.Environment.IsDevelopment() ? 5001 : 443;
+        });
+
+        // Add HSTS (HTTP Strict Transport Security)
+        // builder.Services.AddHsts(options =>
+        // {
+        //     options.Preload = true;
+        //     options.IncludeSubDomains = true;
+        //     options.MaxAge = TimeSpan.FromDays(60);
+        //     options.ExcludedHosts.Add("repack.pw");
+        //     options.ExcludedHosts.Add("www.repack.pw");
+        // });
 
         var app = builder.Build();
 
@@ -61,6 +79,10 @@ internal class Program
             // Add fake datа
             PrepDB.PrepPopulation(app);
         }
+        // else
+        // { 
+        //     app.UseHsts();
+        // }
 
         app.UseRouting();
         app.UseEndpoints(ep => 
@@ -68,6 +90,7 @@ internal class Program
             ControllerActionEndpointConventionBuilder controllerActionEndpointConventionBuilder = ep.MapControllers();
         });
 
+        // Перенаправления HTTP-запросов на HTTPS
         app.UseHttpsRedirection();
 
         // Add endpoint for liveness probes

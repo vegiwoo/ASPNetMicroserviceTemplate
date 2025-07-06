@@ -21,11 +21,11 @@ spec:
             name: testservice01-ip
             port:
               number: 8081
-      - path: /example/.*
+      - path: /example
         pathType: Prefix
         backend:
           service:
-            name: robohash-ip
+            name: robohash-cip
             port:
               number: 8082
   # секция для сертификации
