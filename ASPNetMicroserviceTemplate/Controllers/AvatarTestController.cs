@@ -22,7 +22,11 @@ namespace ASPNetMicroserviceTemplate.Controllers
             {
                 logger.LogInformation("[INFO]: Avatar endpoint {Point} available at {DateTime}", avatarUrlString, DateTimeNowString);
 
-                await SendPing(avatarUrlString);
+                ActionResult? pingResult = await SendPing(avatarUrlString);
+                if(pingResult is not null && pingResult is ObjectResult objectResult && objectResult.StatusCode != 200)
+                {
+                    return objectResult;
+                }
 
                 Random random = new();
                 int avatarId = (int)random.NextInt64(1, 99);
