@@ -12,6 +12,8 @@ RUN dotnet publish -c Release -o /out
 
 # Use the official .NET runtime image for the final stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y \ 
+    curl 
 WORKDIR /app
 
 # Copy the published output from the build stage

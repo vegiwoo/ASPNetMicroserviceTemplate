@@ -29,7 +29,7 @@ spec:
         # Имя контейнера
       - name: service01-container
         # Адрес образа на Docker Hub
-        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.32
+        image: docker.io/vegiwoo/aspnetmicroservicetemplate:1.0.35
         resources:
           # Ресурсы, которые будут выделены контейнеру
           requests:
@@ -67,7 +67,7 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
         # Test! 
-        - name: AVATAR_ENDPOINT
-          value: http://robohash-cip # Ссылка на сервис RoboHash
+        # - name: AVATAR_ENDPOINT
+        #   value: https://robohash-cip:80 # Ссылка на сервис RoboHash
         # - name: NASDAQ_ENDPOINT
         #   value: http://nasdaq-cip # Ссылка на сервис Nasdaq Data Link

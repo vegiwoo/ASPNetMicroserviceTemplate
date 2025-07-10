@@ -12,21 +12,18 @@ namespace ASPNetMicroserviceTemplate.Controllers
         [HttpGet]
         public async Task<ActionResult> GetImage()
         {
-            var avatarUrlString = Environment.GetEnvironmentVariable("AVATAR_ENDPOINT");
-            if (string.IsNullOrEmpty(avatarUrlString))
+            var avatarEnvString = Environment.GetEnvironmentVariable("AVATAR_ENDPOINT");
+
+            
+            if (string.IsNullOrEmpty(avatarEnvString))
             {
-                logger.LogError("[ERROR]: AVATAR_ENDPOINT is not available at {DateTimeNowString}", DateTimeNowString);
-                return Problem("AVATAR_ENDPOINT is not available");
+                logger.LogError("[ERROR]: Avatar service env variable is not available at {DateTimeNowString}", DateTimeNowString);
+                return Problem("[ERROR]: Avatar service env variable is not available at {DateTimeNowString}", DateTimeNowString);
             }
             else
             {
-                logger.LogInformation("[INFO]: Avatar endpoint {Point} available at {DateTime}", avatarUrlString, DateTimeNowString);
-
-                ActionResult? pingResult = await SendPing(avatarUrlString);
-                if(pingResult is not null && pingResult is ObjectResult objectResult && objectResult.StatusCode != 200)
-                {
-                    return objectResult;
-                }
+                var avatarUrlString = $"http://{avatarEnvString}";
+                logger.LogInformation("[INFO]: Robohash service env variables {Point} available at {DateTime}", avatarUrlString, DateTimeNowString);
 
                 Random random = new();
                 int avatarId = (int)random.NextInt64(1, 99);
