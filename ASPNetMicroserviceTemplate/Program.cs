@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using ASPNetMicroserviceTemplate.Data;
+using ASPNetMicroserviceTemplate.HttpClients;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -21,7 +23,7 @@ internal class Program
 
         // Logging
         builder.Logging.ClearProviders().AddConsole();
-        
+
         builder.Services
             .AddHttpClient()
             .AddEntityFrameworkInMemoryDatabase()
@@ -30,8 +32,15 @@ internal class Program
                 options.UseInMemoryDatabase("InMem").UseInternalServiceProvider(sp);
             })
             .AddScoped<ISomeModelsRepo, SomeModelRepo>();
-            //.AddHttpClient<IAnotherServiceDataClient, AnotherServiceDataClient>();
-            //.AddHttpContextAccessor();
+        //.AddHttpClient<IAnotherServiceDataClient, AnotherServiceDataClient>();
+        //.AddHttpContextAccessor();
+
+        builder.Services.AddHttpClient<RobohashClient>(client =>
+        {
+            client.BaseAddress = new Uri("http://robohash-cip"); // DNS-имя сервиса
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/png"));
+        });
+
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
